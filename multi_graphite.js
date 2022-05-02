@@ -89,50 +89,99 @@ class MultiGraphite extends React.Component {
     });
 
     return (
-    <div>
-        json:<br/>
-        <textarea
-            style={{backgroundColor: jsonBackgroundColor}}
-            value={this.state.json}
-            onChange={(event) => this.handleOnChange(event, 'json')}
-            rows='12'
-            cols='50'
-        ></textarea>
-        <br/>
-        <br/>
+    <section className="section">
 
-        targets:<br/>
-        <textarea
-            value={this.state.targets}
-            onChange={(event) => this.handleOnChange(event, 'targets')}
-            rows='12'
-            cols='50'
-        ></textarea>
-        <br/>
-        <br/>
+      <div className="columns">
 
-        graphite url:<br/>
-        <input
-            value={this.state.url}
-            onChange={(event) => this.handleOnChange(event, 'url')}
-            size='50'
-        />
-        <br/>
-        <br/>
+        <div className="column is-one-third">
 
-        from: <input value={this.state.from} onChange={(event) => this.handleOnChange(event, 'from')}/><br/>
-        to: <input value={this.state.to} onChange={(event) => this.handleOnChange(event, 'to')}/><br/>
-        last N: <input  value={this.state.lastN} onChange={(event) => this.handleOnChange(event, 'lastN')}/><br/>
-        <br/>
+          <div className="field">
+            <label className="label">JSON:</label>
+            <div className="control">
+              <textarea
+                  className="textarea"
+                  style={{backgroundColor: jsonBackgroundColor}}
+                  value={this.state.json}
+                  onChange={(event) => this.handleOnChange(event, 'json')}
+                  rows='8'
+              ></textarea>
+            </div>
+          </div>
 
-        width: <input value={this.state.width} onChange={(event) => this.handleOnChange(event, 'width')}/><br/>
-        height: <input value={this.state.height} onChange={(event) => this.handleOnChange(event, 'height')}/><br/>
-        <br/>
+          <div className="field">
+            <label className="label">Targets:</label>
+            <div className="control">
+              <textarea
+                  className="textarea"
+                  value={this.state.targets}
+                  onChange={(event) => this.handleOnChange(event, 'targets')}
+                  rows='4'
+              ></textarea>
+            </div>
+          </div>
 
-        <br/>
-        { imagesTags }
+          <div className="field">
+            <label className="label">Graphite url:</label>
+            <div className="control">
+              <input
+                  className="input"
+                  type="text"
+                  value={this.state.url}
+                  onChange={(event) => this.handleOnChange(event, 'url')}
+                  size='50'
+              />
+            </div>
+          </div>
 
-    </div>
+          <div className="field is-horizontal">
+            <div className="field-body">
+              <div className="field">
+                <p className="control is-expanded">
+                  <input className="input" type="text" placeholder="From" value={this.state.from} onChange={(event) => this.handleOnChange(event, 'from')}/>
+                </p>
+              </div>
+              <div className="field">
+                <p className="control is-expanded">
+                  <input className="input" type="text" placeholder="To" value={this.state.to} onChange={(event) => this.handleOnChange(event, 'to')}/><br/>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="field">
+            <label className="label">Last:</label>
+            <div className="control">
+              <input className="input" type="text" value={this.state.lastN} onChange={(event) => this.handleOnChange(event, 'lastN')}/><br/>
+            </div>
+          </div>
+
+          <div className="field is-horizontal">
+            <div className="field-label is-normal">
+              <label className="label">Size</label>
+            </div>
+            <div className="field-body">
+              <div className="field">
+                <p className="control is-expanded">
+                  <input className="input" type="text" placeholder="Width" value={this.state.width} onChange={(event) => this.handleOnChange(event, 'width')}/><br/>
+                </p>
+              </div>
+              <div className="field">
+                <p className="control is-expanded">
+                  <input className="input" type="text" placeholder="Height" value={this.state.height} onChange={(event) => this.handleOnChange(event, 'height')}/><br/>
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div className="column">
+          { imagesTags }
+        </div>
+
+      </div>
+
+    </section>
     );
 
   }
