@@ -10,15 +10,15 @@ class MultiGraphite extends React.Component {
         jsonData: [{value:123},{value:456}],
         isValidJson: true,
 
-        targets: '',
+        targets: 'ha.sensor.cpu_temperature.state\nha.sensor.processor_use.state',
 
-        url: '',
+        url: 'http://localhost',
 
         from: '',
         to: '',
         lastN: '24h',
 
-        width: '100',
+        width: '300',
         height: '100',
     };
 
@@ -44,6 +44,8 @@ class MultiGraphite extends React.Component {
 
   render() {
 
+    var _this = this;
+
     var jsonBackgroundColor = '';
     if (this.state.isValidJson) {
         jsonBackgroundColor = 'white';
@@ -51,6 +53,40 @@ class MultiGraphite extends React.Component {
         jsonBackgroundColor = '#ffc9c9';
     }
 
+    var images = [];
+
+    this.state.jsonData.forEach(function(el){
+
+        var searchParams = new URLSearchParams();
+
+        searchParams.append('from', '-' + _this.state.lastN);
+
+        searchParams.append('width', _this.state.width);
+        searchParams.append('height', _this.state.height);
+
+        var targets = _this.state.targets.split(/\r?\n/);
+        targets.forEach(function(t){
+            if (!t.replace(/\s/g, '').length) {
+                return;
+            }
+
+            if (t.trim().startsWith('#')) {
+                return;
+            }
+
+            searchParams.append('target', t);
+        });
+
+        var image_url = _this.state.url + "/render/?" + searchParams;
+        images.push(image_url);
+    });
+
+
+    var imagesTags = [];
+    images.forEach(function(el){
+        imagesTags.push(<div>{ el }</div>);
+        imagesTags.push(<img src={ el }/>);
+    });
 
     return (
     <div>
@@ -67,7 +103,7 @@ class MultiGraphite extends React.Component {
 
         targets:<br/>
         <textarea
-            value={this.state.targes}
+            value={this.state.targets}
             onChange={(event) => this.handleOnChange(event, 'targets')}
             rows='12'
             cols='50'
@@ -92,6 +128,9 @@ class MultiGraphite extends React.Component {
         width: <input value={this.state.width} onChange={(event) => this.handleOnChange(event, 'width')}/><br/>
         height: <input value={this.state.height} onChange={(event) => this.handleOnChange(event, 'height')}/><br/>
         <br/>
+
+        <br/>
+        { imagesTags }
 
     </div>
     );
