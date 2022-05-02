@@ -9,15 +9,41 @@ class MultiGraphite extends React.Component {
   }
 
   render() {
-    if (this.state.liked) {
-      return 'You liked this.';
-    }
 
     return (
+    <div>
+        json:<br/>
+        <textarea>
+        </textarea>
+        <br/>
+        <br/>
+
+        targets:<br/>
+        <textarea>
+        </textarea>
+        <br/>
+        <br/>
+
+        graphite url:<br/>
+        <input />
+        <br/>
+        <br/>
+
+        from: <input /><br/>
+        to: <input /><br/>
+        last N: <input /><br/>
+        <br/>
+
+        width: <input /><br/>
+        height: <input /><br/>
+        <br/>
+
       <button onClick={() => this.setState({ liked: true })}>
         Like
       </button>
+    </div>
     );
+
   }
 }
 
