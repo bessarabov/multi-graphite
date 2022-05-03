@@ -20,6 +20,8 @@ class MultiGraphite extends React.Component {
 
         width: '300',
         height: '100',
+
+        debug: false,
     };
 
     this.handleChange = this.handleOnChange.bind(this);
@@ -87,12 +89,21 @@ class MultiGraphite extends React.Component {
 
     var imagesTags = [];
     images.forEach(function(el){
-        imagesTags.push(<div>{ el }</div>);
-        imagesTags.push(<img src={ el }/>);
+        if (_this.state.debug) {
+            imagesTags.push(<div>{el}</div>);
+        }
+        imagesTags.push(
+            <img
+                src={ el }
+                style={{ marginRight: '5px' }}
+                width={ _this.state.width }
+                height={ _this.state.height }
+            />
+        );
     });
 
     return (
-    <section className="section">
+    <section style={{ paddingTop: '18px', paddingLeft: '18px', paddingRight: '0' }} className="section">
 
       <div className="columns">
 
