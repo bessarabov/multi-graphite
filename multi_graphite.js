@@ -77,6 +77,9 @@ class MultiGraphite extends React.Component {
             searchParams.append('target', t);
         });
 
+        var time = new Date().getTime() / 1000;
+        searchParams.append('_salt', time);
+
         var image_url = _this.state.url + "/render/?" + searchParams;
         images.push(image_url);
     });
