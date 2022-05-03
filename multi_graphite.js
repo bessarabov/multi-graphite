@@ -5,6 +5,20 @@ const e = React.createElement;
 class MultiGraphite extends React.Component {
   constructor(props) {
     super(props);
+
+    var d = new Date();
+    var date = d.getDate();
+    if (date < 10) {
+        date = "0" + date;
+    }
+
+    var month = d.getMonth() + 1;
+    if (month < 10) {
+        month = "0" + month;
+    }
+
+    var yyyymmdd = d.getFullYear() + month + date;
+
     this.state = {
         json: '[\n  {\n    "value":123\n  },\n  {\n    "value":456\n  }\n]',
         jsonData: [{value:123},{value:456}],
@@ -14,17 +28,19 @@ class MultiGraphite extends React.Component {
 
         url: 'http://localhost',
 
-        from: '',
-        to: '',
-        lastN: '24h',
+        timeType: 'range', // enum 'range' or 'recent'
+        from: '00:00_' + yyyymmdd,
+        until: '23:59_' + yyyymmdd,
+        recent: '24h',
 
-        width: '300',
-        height: '100',
+        width: '930',
+        height: '300',
 
         debug: false,
     };
 
     this.handleChange = this.handleOnChange.bind(this);
+    this.handleTimeTypeChange = this.handleTimeTypeChange.bind(this);
   }
 
   handleOnChange(event, what) {
@@ -44,6 +60,10 @@ class MultiGraphite extends React.Component {
     }
   }
 
+  handleTimeTypeChange(event, what) {
+    this.setState({timeType: what});
+  }
+
   render() {
 
     var _this = this;
@@ -61,7 +81,12 @@ class MultiGraphite extends React.Component {
 
         var searchParams = new URLSearchParams();
 
-        searchParams.append('from', '-' + _this.state.lastN);
+        if (_this.state.timeType === 'range') {
+            searchParams.append('from', _this.state.from);
+            searchParams.append('until', _this.state.until);
+        } else if (_this.state.timeType === 'recent') {
+            searchParams.append('from', '-' + _this.state.recent);
+        }
 
         searchParams.append('width', _this.state.width);
         searchParams.append('height', _this.state.height);
@@ -101,6 +126,39 @@ class MultiGraphite extends React.Component {
             />
         );
     });
+
+    var rangeClassName;
+    var recentClassName;
+    var timeControls = [];
+
+    if (this.state.timeType === 'range') {
+      rangeClassName = 'is-active';
+      timeControls.push(
+        <div className="field is-horizontal">
+          <div className="field-body">
+            <div className="field">
+              <p className="control is-expanded">
+                <input className="input" type="text" placeholder="From" value={this.state.from} onChange={(event) => this.handleOnChange(event, 'from')}/>
+              </p>
+            </div>
+            <div className="field">
+              <p className="control is-expanded">
+                <input className="input" type="text" placeholder="Until" value={this.state.until} onChange={(event) => this.handleOnChange(event, 'until')}/><br/>
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (this.state.timeType === 'recent') {
+      recentClassName = 'is-active';
+      timeControls.push(
+        <div className="field">
+          <div className="control">
+            <input className="input" type="text" value={this.state.recent} onChange={(event) => this.handleOnChange(event, 'recent')}/><br/>
+          </div>
+        </div>
+      );
+    }
 
     return (
     <section style={{ paddingTop: '18px', paddingLeft: '18px', paddingRight: '0' }} className="section">
@@ -148,28 +206,6 @@ class MultiGraphite extends React.Component {
           </div>
 
           <div className="field is-horizontal">
-            <div className="field-body">
-              <div className="field">
-                <p className="control is-expanded">
-                  <input className="input" type="text" placeholder="From" value={this.state.from} onChange={(event) => this.handleOnChange(event, 'from')}/>
-                </p>
-              </div>
-              <div className="field">
-                <p className="control is-expanded">
-                  <input className="input" type="text" placeholder="To" value={this.state.to} onChange={(event) => this.handleOnChange(event, 'to')}/><br/>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="field">
-            <label className="label">Last:</label>
-            <div className="control">
-              <input className="input" type="text" value={this.state.lastN} onChange={(event) => this.handleOnChange(event, 'lastN')}/><br/>
-            </div>
-          </div>
-
-          <div className="field is-horizontal">
             <div className="field-label is-normal">
               <label className="label">Size</label>
             </div>
@@ -186,6 +222,23 @@ class MultiGraphite extends React.Component {
               </div>
             </div>
           </div>
+
+          <div className="tabs is-boxed">
+            <ul>
+              <li className={rangeClassName}>
+                <a onClick={(event) => this.handleTimeTypeChange(event, 'range')}>
+                  <span>Date range</span>
+                </a>
+              </li>
+              <li className={recentClassName}>
+                <a onClick={(event) => this.handleTimeTypeChange(event, 'recent')}>
+                  <span>Recent data</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          { timeControls }
 
         </div>
 
