@@ -41,6 +41,7 @@ class MultiGraphite extends React.Component {
 
     this.handleChange = this.handleOnChange.bind(this);
     this.handleTimeTypeChange = this.handleTimeTypeChange.bind(this);
+    this.getWithExpandedMacroses = this.getWithExpandedMacroses.bind(this);
   }
 
   handleOnChange(event, what) {
@@ -64,6 +65,15 @@ class MultiGraphite extends React.Component {
     this.setState({timeType: what});
   }
 
+  getWithExpandedMacroses(str, obj) {
+    for (const p in obj) {
+        var re = new RegExp("{\\s*" + p + "\\s*}", "g");
+        str = str.replace(re, obj[p]);
+    }
+
+    return str;
+  }
+
   render() {
 
     var _this = this;
@@ -77,19 +87,19 @@ class MultiGraphite extends React.Component {
 
     var images = [];
 
-    this.state.jsonData.forEach(function(el){
+    this.state.jsonData.forEach(function(obj){
 
         var searchParams = new URLSearchParams();
 
         if (_this.state.timeType === 'range') {
-            searchParams.append('from', _this.state.from);
-            searchParams.append('until', _this.state.until);
+            searchParams.append('from', _this.getWithExpandedMacroses(_this.state.from, obj));
+            searchParams.append('until', _this.getWithExpandedMacroses(_this.state.until, obj));
         } else if (_this.state.timeType === 'recent') {
-            searchParams.append('from', '-' + _this.state.recent);
+            searchParams.append('from', '-' + _this.getWithExpandedMacroses(_this.state.recent, obj));
         }
 
-        searchParams.append('width', _this.state.width);
-        searchParams.append('height', _this.state.height);
+        searchParams.append('width', _this.getWithExpandedMacroses(_this.state.width, obj));
+        searchParams.append('height', _this.getWithExpandedMacroses(_this.state.height, obj));
 
         var targets = _this.state.targets.split(/\r?\n/);
         targets.forEach(function(t){
@@ -101,28 +111,32 @@ class MultiGraphite extends React.Component {
                 return;
             }
 
-            searchParams.append('target', t);
+            searchParams.append('target', _this.getWithExpandedMacroses(t, obj));
         });
 
         var time = new Date().getTime() / 1000;
         searchParams.append('_salt', time);
 
-        var image_url = _this.state.url + "/render/?" + searchParams;
-        images.push(image_url);
+        var image_url = _this.getWithExpandedMacroses(_this.state.url, obj) + "/render/?" + searchParams;
+        images.push({
+            image_url: image_url,
+            width: _this.getWithExpandedMacroses(_this.state.width, obj),
+            height: _this.getWithExpandedMacroses(_this.state.height, obj),
+        });
     });
 
 
     var imagesTags = [];
     images.forEach(function(el){
         if (_this.state.debug) {
-            imagesTags.push(<div>{el}</div>);
+            imagesTags.push(<div>{ el.image_url }</div>);
         }
         imagesTags.push(
             <img
-                src={ el }
+                src={ el.image_url }
                 style={{ marginRight: '5px' }}
-                width={ _this.state.width }
-                height={ _this.state.height }
+                width={ el.width }
+                height={ el.height }
             />
         );
     });
