@@ -6,6 +6,24 @@ class MultiGraphite extends React.Component {
   constructor(props) {
     super(props);
 
+    var hash = location.hash.substr(3);
+    var hashObj = {}
+
+    if (hash) {
+      hash = hash.replace(/\+/g, '%20');
+      hash.split("&").forEach(function(pair){
+        var kv = pair.split('=');
+        var key = kv[0];
+        var value = decodeURIComponent(kv[1]);
+
+        if (key === 'debug') {
+          value = value === 'true' ? true : false;
+        }
+
+        hashObj[key] = value;
+      });
+    }
+
     var d = new Date();
     var date = d.getDate();
     if (date < 10) {
@@ -19,10 +37,8 @@ class MultiGraphite extends React.Component {
 
     var yyyymmdd = d.getFullYear() + month + date;
 
-    this.state = {
+    var state = {
         json: '[\n  {\n    "value":123\n  },\n  {\n    "value":456\n  }\n]',
-        jsonData: [{value:123},{value:456}],
-        isValidJson: true,
 
         targets: 'ha.sensor.cpu_temperature.state\nha.sensor.processor_use.state',
 
@@ -39,30 +55,43 @@ class MultiGraphite extends React.Component {
         debug: false,
     };
 
+    var mergedState = {...state, ...hashObj};
+
+    try {
+      var parsed = JSON.parse(mergedState.json);
+      mergedState.jsonData = parsed;
+      mergedState.isValidJson = true;
+    } catch (error) {
+      mergedState.isValidJson = false;
+    }
+
+    this.state = mergedState;
+
     this.handleChange = this.handleOnChange.bind(this);
     this.handleTimeTypeChange = this.handleTimeTypeChange.bind(this);
     this.getWithExpandedMacroses = this.getWithExpandedMacroses.bind(this);
+    this.changeURL = this.changeURL.bind(this);
   }
 
   handleOnChange(event, what) {
     var newState = {};
     newState[what] = event.target.value
 
-    this.setState(newState);
-
     if (what === 'json') {
         try {
-            var parsed = JSON.parse(event.target.value);
-            this.setState({jsonData: parsed});
-            this.setState({isValidJson: true});
+          var parsed = JSON.parse(event.target.value);
+          newState.jsonData = parsed;
+          newState.isValidJson = true;
         } catch (error) {
-            this.setState({isValidJson: false});
+          newState.isValidJson = false;
         }
     }
+
+    this.setState(newState, this.changeURL);
   }
 
   handleTimeTypeChange(event, what) {
-    this.setState({timeType: what});
+    this.setState({timeType: what}, this.changeURL);
   }
 
   getWithExpandedMacroses(str, obj) {
@@ -72,6 +101,25 @@ class MultiGraphite extends React.Component {
     }
 
     return str;
+  }
+
+  changeURL() {
+    var _this = this;
+
+    var searchParams = new URLSearchParams();
+
+    Object.keys(this.state).forEach(function(el) {
+        if (el === "jsonData") {
+          return;
+        }
+        if (el === "isValidJson") {
+          return;
+        }
+
+        searchParams.append(el, _this.state[el]);
+    });
+
+    window.history.pushState("", "", '#/?' + searchParams);
   }
 
   render() {
