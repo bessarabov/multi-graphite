@@ -37,8 +37,17 @@ class MultiGraphite extends React.Component {
 
     var yyyymmdd = d.getFullYear() + month + date;
 
+    var defaultJsonData = [
+      {
+        "value":123
+      },
+      {
+        "value":456
+      }
+    ];
+
     var state = {
-        json: '[\n  {\n    "value":123\n  },\n  {\n    "value":456\n  }\n]',
+        json: JSON.stringify(defaultJsonData, null, '  '),
 
         targets: 'ha.sensor.cpu_temperature.state\nha.sensor.processor_use.state',
 
