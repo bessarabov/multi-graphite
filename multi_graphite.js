@@ -115,20 +115,22 @@ class MultiGraphite extends React.Component {
   changeURL() {
     var _this = this;
 
-    var searchParams = new URLSearchParams();
+    if (_this.state.isValidJson) {
+      var searchParams = new URLSearchParams();
 
-    Object.keys(this.state).forEach(function(el) {
-        if (el === "jsonData") {
-          return;
-        }
-        if (el === "isValidJson") {
-          return;
-        }
+      Object.keys(this.state).forEach(function(el) {
+          if (el === "jsonData") {
+            return;
+          }
+          if (el === "isValidJson") {
+            return;
+          }
 
-        searchParams.append(el, _this.state[el]);
-    });
+          searchParams.append(el, _this.state[el]);
+      });
 
-    window.history.pushState("", "", '#/?' + searchParams);
+      window.history.pushState("", "", '#/?' + searchParams);
+    }
   }
 
   render() {
