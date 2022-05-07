@@ -287,7 +287,7 @@ class MultiGraphite extends React.Component {
 
           <div className="field is-horizontal">
             <div className="field-label is-normal">
-              <label className="label">Size</label>
+              <label className="label">Size:</label>
             </div>
             <div className="field-body">
               <div className="field">
