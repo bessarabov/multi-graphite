@@ -24,45 +24,7 @@ class MultiGraphite extends React.Component {
       });
     }
 
-    var d = new Date();
-    var date = d.getDate();
-    if (date < 10) {
-        date = "0" + date;
-    }
-
-    var month = d.getMonth() + 1;
-    if (month < 10) {
-        month = "0" + month;
-    }
-
-    var yyyymmdd = d.getFullYear() + month + date;
-
-    var defaultJsonData = [
-      {
-        "value":123
-      },
-      {
-        "value":456
-      }
-    ];
-
-    var state = {
-        json: JSON.stringify(defaultJsonData, null, '  '),
-
-        targets: 'ha.sensor.cpu_temperature.state\nha.sensor.processor_use.state',
-
-        url: 'http://localhost',
-
-        timeType: 'range', // enum 'range' or 'recent'
-        from: '00:00_' + yyyymmdd,
-        until: '23:59_' + yyyymmdd,
-        recent: '24h',
-
-        width: '930',
-        height: '300',
-
-        debug: false,
-    };
+    var state = this.getDefaultState();
 
     var mergedState = {...state, ...hashObj};
 
@@ -80,6 +42,8 @@ class MultiGraphite extends React.Component {
     this.handleTimeTypeChange = this.handleTimeTypeChange.bind(this);
     this.getWithExpandedMacroses = this.getWithExpandedMacroses.bind(this);
     this.changeURL = this.changeURL.bind(this);
+    this.getCurrentYYYYMMDD = this.getCurrentYYYYMMDD.bind(this);
+    this.getDefaultState = this.getDefaultState.bind(this);
   }
 
   handleOnChange(event, what) {
@@ -131,6 +95,56 @@ class MultiGraphite extends React.Component {
 
       window.history.pushState("", "", '#/?' + searchParams);
     }
+  }
+
+  getCurrentYYYYMMDD() {
+    var d = new Date();
+    var date = d.getDate();
+    if (date < 10) {
+        date = "0" + date;
+    }
+
+    var month = d.getMonth() + 1;
+    if (month < 10) {
+        month = "0" + month;
+    }
+
+    var yyyymmdd = d.getFullYear() + month + date;
+
+    return yyyymmdd;
+  }
+
+  getDefaultState() {
+    var yyyymmdd = this.getCurrentYYYYMMDD();
+
+    var defaultJsonData = [
+      {
+        "value":123
+      },
+      {
+        "value":456
+      }
+    ];
+
+    var state = {
+        json: JSON.stringify(defaultJsonData, null, '  '),
+
+        targets: 'ha.sensor.cpu_temperature.state\nha.sensor.processor_use.state',
+
+        url: 'http://localhost',
+
+        timeType: 'range', // enum 'range' or 'recent'
+        from: '00:00_' + yyyymmdd,
+        until: '23:59_' + yyyymmdd,
+        recent: '24h',
+
+        width: '930',
+        height: '300',
+
+        debug: false,
+    };
+
+    return state;
   }
 
   render() {
