@@ -117,29 +117,22 @@ class MultiGraphite extends React.Component {
   getDefaultState() {
     var yyyymmdd = this.getCurrentYYYYMMDD();
 
-    var defaultJsonData = [
-      {
-        "value":123
-      },
-      {
-        "value":456
-      }
-    ];
-
     var state = {
-        json: JSON.stringify(defaultJsonData, null, '  '),
+        json: '[]',
+        jsonData: [],
+        isValidJson: true,
 
-        targets: 'ha.sensor.cpu_temperature.state\nha.sensor.processor_use.state',
+        targets: '',
 
         url: 'http://localhost',
+
+        width: '930',
+        height: '300',
 
         timeType: 'range', // enum 'range' or 'recent'
         from: '00:00_' + yyyymmdd,
         until: '23:59_' + yyyymmdd,
         recent: '24h',
-
-        width: '930',
-        height: '300',
 
         debug: false,
     };
