@@ -38,6 +38,8 @@ class MultiGraphite extends React.Component {
 
     this.state = mergedState;
 
+    document.title = mergedState.title;
+
     this.handleChange = this.handleOnChange.bind(this);
     this.handleTimeTypeChange = this.handleTimeTypeChange.bind(this);
     this.getWithExpandedMacroses = this.getWithExpandedMacroses.bind(this);
@@ -48,16 +50,21 @@ class MultiGraphite extends React.Component {
 
   handleOnChange(event, what) {
     var newState = {};
-    newState[what] = event.target.value
+    var value = event.target.value;
+    newState[what] = value;
 
     if (what === 'json') {
         try {
-          var parsed = JSON.parse(event.target.value);
+          var parsed = JSON.parse(value);
           newState.jsonData = parsed;
           newState.isValidJson = true;
         } catch (error) {
           newState.isValidJson = false;
         }
+    }
+
+    if (what === 'title') {
+      document.title = value;
     }
 
     this.setState(newState, this.changeURL);
@@ -118,6 +125,9 @@ class MultiGraphite extends React.Component {
     var yyyymmdd = this.getCurrentYYYYMMDD();
 
     var state = {
+
+        title: 'multi-graphite',
+
         json: '[]',
         jsonData: [],
         isValidJson: true,
@@ -246,6 +256,19 @@ class MultiGraphite extends React.Component {
       <div className="columns">
 
         <div className="column is-one-third">
+
+          <div className="field">
+            <label className="label">Title:</label>
+            <div className="control">
+              <input
+                  className="input"
+                  type="text"
+                  value={this.state.title}
+                  onChange={(event) => this.handleOnChange(event, 'title')}
+                  size='50'
+              />
+            </div>
+          </div>
 
           <div className="field">
             <label className="label">JSON:</label>
