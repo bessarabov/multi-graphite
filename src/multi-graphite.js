@@ -36,12 +36,6 @@ class MultiGraphite extends React.Component {
 
     document.title = mergedState.title;
 
-    this.handleChange = this.handleOnChange.bind(this);
-    this.handleTimeTypeChange = this.handleTimeTypeChange.bind(this);
-    this.getWithExpandedMacroses = this.getWithExpandedMacroses.bind(this);
-    this.changeURL = this.changeURL.bind(this);
-    this.getCurrentYYYYMMDD = this.getCurrentYYYYMMDD.bind(this);
-    this.getDefaultState = this.getDefaultState.bind(this);
   }
 
   handleOnChange(event, what) {
