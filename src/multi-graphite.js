@@ -38,7 +38,7 @@ class MultiGraphite extends React.Component {
 
   }
 
-  handleOnChange(event, what) {
+  handleControlChange(event, what) {
     var newState = {};
     var value = event.target.value;
     newState[what] = value;
@@ -214,12 +214,12 @@ class MultiGraphite extends React.Component {
           <div className="field-body">
             <div className="field">
               <p className="control is-expanded">
-                <input className="input" type="text" placeholder="From" value={this.state.from} onChange={(event) => this.handleOnChange(event, 'from')}/>
+                <input className="input" type="text" placeholder="From" value={this.state.from} onChange={(event) => this.handleControlChange(event, 'from')}/>
               </p>
             </div>
             <div className="field">
               <p className="control is-expanded">
-                <input className="input" type="text" placeholder="Until" value={this.state.until} onChange={(event) => this.handleOnChange(event, 'until')}/><br/>
+                <input className="input" type="text" placeholder="Until" value={this.state.until} onChange={(event) => this.handleControlChange(event, 'until')}/><br/>
               </p>
             </div>
           </div>
@@ -230,7 +230,7 @@ class MultiGraphite extends React.Component {
       timeControls.push(
         <div className="field">
           <div className="control">
-            <input className="input" type="text" value={this.state.recent} onChange={(event) => this.handleOnChange(event, 'recent')}/><br/>
+            <input className="input" type="text" value={this.state.recent} onChange={(event) => this.handleControlChange(event, 'recent')}/><br/>
           </div>
         </div>
       );
@@ -250,7 +250,7 @@ class MultiGraphite extends React.Component {
                   className="input"
                   type="text"
                   value={this.state.title}
-                  onChange={(event) => this.handleOnChange(event, 'title')}
+                  onChange={(event) => this.handleControlChange(event, 'title')}
                   size='50'
               />
             </div>
@@ -263,7 +263,7 @@ class MultiGraphite extends React.Component {
                   className="textarea"
                   style={{backgroundColor: jsonBackgroundColor}}
                   value={this.state.json}
-                  onChange={(event) => this.handleOnChange(event, 'json')}
+                  onChange={(event) => this.handleControlChange(event, 'json')}
                   rows='8'
               ></textarea>
             </div>
@@ -275,7 +275,7 @@ class MultiGraphite extends React.Component {
               <textarea
                   className="textarea"
                   value={this.state.targets}
-                  onChange={(event) => this.handleOnChange(event, 'targets')}
+                  onChange={(event) => this.handleControlChange(event, 'targets')}
                   rows='4'
               ></textarea>
             </div>
@@ -288,7 +288,7 @@ class MultiGraphite extends React.Component {
                   className="input"
                   type="text"
                   value={this.state.url}
-                  onChange={(event) => this.handleOnChange(event, 'url')}
+                  onChange={(event) => this.handleControlChange(event, 'url')}
                   size='50'
               />
             </div>
@@ -301,12 +301,12 @@ class MultiGraphite extends React.Component {
             <div className="field-body">
               <div className="field">
                 <p className="control is-expanded">
-                  <input className="input" type="text" placeholder="Width" value={this.state.width} onChange={(event) => this.handleOnChange(event, 'width')}/><br/>
+                  <input className="input" type="text" placeholder="Width" value={this.state.width} onChange={(event) => this.handleControlChange(event, 'width')}/><br/>
                 </p>
               </div>
               <div className="field">
                 <p className="control is-expanded">
-                  <input className="input" type="text" placeholder="Height" value={this.state.height} onChange={(event) => this.handleOnChange(event, 'height')}/><br/>
+                  <input className="input" type="text" placeholder="Height" value={this.state.height} onChange={(event) => this.handleControlChange(event, 'height')}/><br/>
                 </p>
               </div>
             </div>
