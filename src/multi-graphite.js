@@ -16,10 +16,6 @@ class MultiGraphite extends React.Component {
         var key = kv[0];
         var value = decodeURIComponent(kv[1]);
 
-        if (key === 'debug') {
-          value = value === 'true' ? true : false;
-        }
-
         hashObj[key] = value;
       });
     }
@@ -144,7 +140,6 @@ class MultiGraphite extends React.Component {
         until: '23:59_' + yyyymmdd,
         recent: '24h',
 
-        debug: false,
     };
 
     return state;
@@ -204,9 +199,6 @@ class MultiGraphite extends React.Component {
 
     var imagesTags = [];
     images.forEach(function(el){
-        if (_this.state.debug) {
-            imagesTags.push(<div>{ el.image_url }</div>);
-        }
         imagesTags.push(
             <img
                 src={ el.image_url }
