@@ -1,5 +1,11 @@
 'use strict';
 
+URLSearchParams.prototype.appendIfValid = function(name, value) {
+  if (value !== '') {
+    this.append(name, value);
+  }
+};
+
 const e = React.createElement;
 
 class MultiGraphite extends React.Component {
@@ -157,14 +163,14 @@ class MultiGraphite extends React.Component {
         var searchParams = new URLSearchParams();
 
         if (_this.state.timeType === 'range') {
-            searchParams.append('from', _this.getWithExpandedMacroses(_this.state.from, obj));
-            searchParams.append('until', _this.getWithExpandedMacroses(_this.state.until, obj));
-        } else if (_this.state.timeType === 'recent') {
-            searchParams.append('from', '-' + _this.getWithExpandedMacroses(_this.state.recent, obj));
+            searchParams.appendIfValid('from', _this.getWithExpandedMacroses(_this.state.from, obj));
+            searchParams.appendIfValid('until', _this.getWithExpandedMacroses(_this.state.until, obj));
+        } else if (_this.state.timeType === 'recent' && _this.state.recent !== '') {
+            searchParams.appendIfValid('from', '-' + _this.getWithExpandedMacroses(_this.state.recent, obj));
         }
 
-        searchParams.append('width', _this.getWithExpandedMacroses(_this.state.width, obj));
-        searchParams.append('height', _this.getWithExpandedMacroses(_this.state.height, obj));
+        searchParams.appendIfValid('width', _this.getWithExpandedMacroses(_this.state.width, obj));
+        searchParams.appendIfValid('height', _this.getWithExpandedMacroses(_this.state.height, obj));
 
         var targets = _this.state.targets.split(/\r?\n/);
         targets.forEach(function(t){
@@ -176,7 +182,7 @@ class MultiGraphite extends React.Component {
                 return;
             }
 
-            searchParams.append('target', _this.getWithExpandedMacroses(t, obj));
+            searchParams.appendIfValid('target', _this.getWithExpandedMacroses(t, obj));
         });
 
         var time = new Date().getTime() / 1000;
