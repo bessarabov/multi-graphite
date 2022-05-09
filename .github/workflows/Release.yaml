@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Add version information
+      run: "sed -i 's/Version: dev/Version: ${{ github.ref_name }}/' src/multi-graphite.js"
+
+    - name: Build docker image
+      run: docker build . --tag bessarabov/multi-graphite:${{ github.ref_name }}
+
+    - name: Push docker image
+      run: docker push bessarabov/multi-graphite:${{ github.ref_name }}
