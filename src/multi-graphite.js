@@ -243,6 +243,7 @@ class MultiGraphite extends React.Component {
     }
 
     return (
+    <div>
     <section style={{ paddingTop: '18px', paddingLeft: '18px', paddingRight: '0' }} className="section">
 
       <div className="columns">
@@ -344,6 +345,15 @@ class MultiGraphite extends React.Component {
       </div>
 
     </section>
+
+    <footer className="footer">
+      <div className="content has-text-centered">
+        <p>Version: dev</p>
+        <p><a href="https://github.com/bessarabov/multi-graphite">GitHub</a></p>
+      </div>
+    </footer>
+
+    </div>
     );
 
   }
