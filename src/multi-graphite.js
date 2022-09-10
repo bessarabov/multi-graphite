@@ -70,6 +70,10 @@ class MultiGraphite extends React.Component {
     this.setState({timeType: what}, this.changeURL);
   }
 
+  handleRecentButtonClick(event, what) {
+    this.setState({recent: what}, this.changeURL);
+  }
+
   getWithExpandedMacroses(str, obj) {
     for (const p in obj) {
         var re = new RegExp("{\\s*" + p + "\\s*}", "g");
@@ -90,6 +94,9 @@ class MultiGraphite extends React.Component {
             return;
           }
           if (el === "isValidJson") {
+            return;
+          }
+          if (el === "recentButtons") {
             return;
           }
 
@@ -139,6 +146,18 @@ class MultiGraphite extends React.Component {
         from: '00:00_' + yyyymmdd,
         until: '23:59_' + yyyymmdd,
         recent: '24h',
+
+        recentButtons: [
+            "30min",
+            "1h",
+            "4h",
+            "12h",
+            "24h",
+            "48h",
+            "7d",
+            "14d",
+            "28d",
+        ],
 
     };
 
@@ -240,6 +259,32 @@ class MultiGraphite extends React.Component {
           </div>
         </div>
       );
+
+      var buttons = [];
+
+      this.state.recentButtons.forEach(function(el) {
+        var n = "timeButtonInactive"
+
+        if (_this.state.recent === el) {
+          n = "timeButtonSelected"
+        }
+
+        buttons.push(
+          <span
+            onClick={(event) => _this.handleRecentButtonClick(event, el)}
+            className={ n }
+          >{ el }</span>
+        );
+      });
+
+      timeControls.push(
+        <div className="field">
+          <div className="control">
+            { buttons }
+          </div>
+        </div>
+      );
+
     }
 
     return (
