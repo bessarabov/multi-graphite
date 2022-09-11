@@ -89,12 +89,14 @@ class MultiGraphite extends React.Component {
 
   getGraphiteTimeDateFromNameType(name, type) {
 
+    var d = new Date();
+
     // today
     if (name === "today" && type === "from") {
-      return "00:00_" + this.getYYYYMMDD(new Date());
+      return "00:00_" + this.getYYYYMMDD(d);
     }
     if (name === "today" && type === "until") {
-      return "23:59_" + this.getYYYYMMDD(new Date());
+      return "23:59_" + this.getYYYYMMDD(d);
     }
 
     // yesterday
@@ -110,7 +112,23 @@ class MultiGraphite extends React.Component {
       return "00:00_" + this.getYYYYMMDD(new Date(Date.now() - 86400000));
     }
     if (name === "yesterday & today" && type === "until") {
-      return "23:59_" + this.getYYYYMMDD(new Date);
+      return "23:59_" + this.getYYYYMMDD(d);
+    }
+
+    // this month
+    if (name === "this month" && type === "from") {
+      return "00:00_" + this.getYYYYMMDD(new Date(d.getFullYear(), d.getMonth(), 1));
+    }
+    if (name === "this month" && type === "until") {
+      return "23:59_" + this.getYYYYMMDD(new Date(d.getFullYear(), d.getMonth()+1, 0));
+    }
+
+    // previous month
+    if (name === "previous month" && type === "from") {
+      return "00:00_" + this.getYYYYMMDD(new Date(d.getFullYear(), d.getMonth() - 1, 1));
+    }
+    if (name === "previous month" && type === "until") {
+      return "23:59_" + this.getYYYYMMDD(new Date(d.getFullYear(), d.getMonth(), 0));
     }
 
     return "NOT IMPLEMENTED";
@@ -186,6 +204,10 @@ class MultiGraphite extends React.Component {
             ],
             [
                 "yesterday & today",
+            ],
+            [
+                "this month",
+                "previous month",
             ],
         ],
 
