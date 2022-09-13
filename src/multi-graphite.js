@@ -70,6 +70,14 @@ class MultiGraphite extends React.Component {
     this.setState({timeType: what}, this.changeURL);
   }
 
+  handleDateButtonClick(event, from, until) {
+    this.setState({from: from, until, until}, this.changeURL);
+  }
+
+  handleRecentButtonClick(event, what) {
+    this.setState({recent: what}, this.changeURL);
+  }
+
   getWithExpandedMacroses(str, obj) {
     for (const p in obj) {
         var re = new RegExp("{\\s*" + p + "\\s*}", "g");
@@ -79,17 +87,67 @@ class MultiGraphite extends React.Component {
     return str;
   }
 
+  getGraphiteTimeDateFromNameType(name, type) {
+
+    var d = new Date();
+
+    // today
+    if (name === "today" && type === "from") {
+      return "00:00_" + this.getYYYYMMDD(d);
+    }
+    if (name === "today" && type === "until") {
+      return "23:59_" + this.getYYYYMMDD(d);
+    }
+
+    // yesterday
+    if (name === "yesterday" && type === "from") {
+      return "00:00_" + this.getYYYYMMDD(new Date(Date.now() - 86400000));
+    }
+    if (name === "yesterday" && type === "until") {
+      return "23:59_" + this.getYYYYMMDD(new Date(Date.now() - 86400000));
+    }
+
+    // yesterday & today
+    if (name === "yesterday & today" && type === "from") {
+      return "00:00_" + this.getYYYYMMDD(new Date(Date.now() - 86400000));
+    }
+    if (name === "yesterday & today" && type === "until") {
+      return "23:59_" + this.getYYYYMMDD(d);
+    }
+
+    // this month
+    if (name === "this month" && type === "from") {
+      return "00:00_" + this.getYYYYMMDD(new Date(d.getFullYear(), d.getMonth(), 1));
+    }
+    if (name === "this month" && type === "until") {
+      return "23:59_" + this.getYYYYMMDD(new Date(d.getFullYear(), d.getMonth()+1, 0));
+    }
+
+    // previous month
+    if (name === "previous month" && type === "from") {
+      return "00:00_" + this.getYYYYMMDD(new Date(d.getFullYear(), d.getMonth() - 1, 1));
+    }
+    if (name === "previous month" && type === "until") {
+      return "23:59_" + this.getYYYYMMDD(new Date(d.getFullYear(), d.getMonth(), 0));
+    }
+
+    return "NOT IMPLEMENTED";
+  }
+
   changeURL() {
     var _this = this;
 
     if (_this.state.isValidJson) {
       var searchParams = new URLSearchParams();
+      var ignoreElemtns = [
+          "jsonData",
+          "isValidJson",
+          "dateButtons",
+          "recentButtons",
+      ];
 
       Object.keys(this.state).forEach(function(el) {
-          if (el === "jsonData") {
-            return;
-          }
-          if (el === "isValidJson") {
+          if (ignoreElemtns.includes(el)) {
             return;
           }
 
@@ -100,8 +158,7 @@ class MultiGraphite extends React.Component {
     }
   }
 
-  getCurrentYYYYMMDD() {
-    var d = new Date();
+  getYYYYMMDD(d) {
     var date = d.getDate();
     if (date < 10) {
         date = "0" + date;
@@ -118,7 +175,7 @@ class MultiGraphite extends React.Component {
   }
 
   getDefaultState() {
-    var yyyymmdd = this.getCurrentYYYYMMDD();
+    var yyyymmdd = this.getYYYYMMDD(new Date());
 
     var state = {
 
@@ -139,6 +196,32 @@ class MultiGraphite extends React.Component {
         from: '00:00_' + yyyymmdd,
         until: '23:59_' + yyyymmdd,
         recent: '24h',
+
+        dateButtons: [
+            [
+                "today",
+                "yesterday",
+            ],
+            [
+                "yesterday & today",
+            ],
+            [
+                "this month",
+                "previous month",
+            ],
+        ],
+
+        recentButtons: [
+            "30min",
+            "1h",
+            "4h",
+            "12h",
+            "24h",
+            "48h",
+            "7d",
+            "14d",
+            "28d",
+        ],
 
     };
 
@@ -231,6 +314,37 @@ class MultiGraphite extends React.Component {
           </div>
         </div>
       );
+
+      this.state.dateButtons.forEach(function(row) {
+        var buttons = [];
+        row.forEach(function(el) {
+          var n = "timeButtonInactive"
+
+          var from = _this.getGraphiteTimeDateFromNameType(el, 'from');
+          var until = _this.getGraphiteTimeDateFromNameType(el, 'until');
+
+          if (_this.state.from === from && _this.state.until === until) {
+            n = "timeButtonSelected"
+          }
+
+          buttons.push(
+            <span
+              onClick={(event) => _this.handleDateButtonClick(event, from, until)}
+              className={ n }
+            >{ el }</span>
+          );
+        });
+
+        timeControls.push(
+          <div className="field">
+            <div className="control">
+              { buttons }
+            </div>
+          </div>
+        );
+
+      });
+
     } else if (this.state.timeType === 'recent') {
       recentClassName = 'is-active';
       timeControls.push(
@@ -240,6 +354,32 @@ class MultiGraphite extends React.Component {
           </div>
         </div>
       );
+
+      var buttons = [];
+
+      this.state.recentButtons.forEach(function(el) {
+        var n = "timeButtonInactive"
+
+        if (_this.state.recent === el) {
+          n = "timeButtonSelected"
+        }
+
+        buttons.push(
+          <span
+            onClick={(event) => _this.handleRecentButtonClick(event, el)}
+            className={ n }
+          >{ el }</span>
+        );
+      });
+
+      timeControls.push(
+        <div className="field">
+          <div className="control">
+            { buttons }
+          </div>
+        </div>
+      );
+
     }
 
     return (

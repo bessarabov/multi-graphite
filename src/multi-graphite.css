@@ -1,0 +1,31 @@
+.timeButtonSelected {
+  padding: 0.5em;
+  padding-right: 0.5em;
+
+  margin-top: 0.5em;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+
+  background-color: #FFA500;
+  user-select: none;
+}
+
+.timeButtonInactive {
+  padding: 0.5em;
+  padding-right: 0.5em;
+
+  margin-top: 0.5em;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 4px;
+
+  user-select: none;
+}
+
+.timeButtonInactive:hover {
+  background-color: #F5F5F5;
+  cursor: pointer;
+}
