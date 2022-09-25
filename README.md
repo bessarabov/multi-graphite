@@ -1,5 +1,11 @@
 # multi-graphite
 
+## Screenshots
+
+![1](https://user-images.githubusercontent.com/47263/192137531-97765244-dd14-44a8-b5e4-e4494047aec1.png)
+
+![2](https://user-images.githubusercontent.com/47263/192137544-c0c418fb-2846-4b01-a211-0e6adec5b756.png)
+
 ## How to run
 
 The recommended way to run this project is to use docker.
