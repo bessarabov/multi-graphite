@@ -1,5 +1,6 @@
 # Changelog for multi-graphite
 
+```
 1.0.0   2022-05-27
         [Major]
         * First public release
@@ -11,3 +12,4 @@
 1.1.1   2022-10-06
         [Patch]
         * Fixing 'Date range' buttons
+```
