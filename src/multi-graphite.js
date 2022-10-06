@@ -162,11 +162,15 @@ class MultiGraphite extends React.Component {
     var date = d.getDate();
     if (date < 10) {
         date = "0" + date;
+    } else {
+        date = "" + date;
     }
 
     var month = d.getMonth() + 1;
     if (month < 10) {
         month = "0" + month;
+    } else {
+        month = "" + month;
     }
 
     var yyyymmdd = d.getFullYear() + month + date;
