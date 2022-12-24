@@ -70,6 +70,11 @@ class MultiGraphite extends React.Component {
     this.setState({timeType: what}, this.changeURL);
   }
 
+  handleSizeButtonClick(event, what) {
+    var el = what.split("x");
+    this.setState({width: el[0], height: el[1]}, this.changeURL);
+  }
+
   handleDateButtonClick(event, from, until) {
     this.setState({from: from, until, until}, this.changeURL);
   }
@@ -151,6 +156,7 @@ class MultiGraphite extends React.Component {
       var ignoreElemtns = [
           "jsonData",
           "isValidJson",
+          "sizeButtons",
           "dateButtons",
           "recentButtons",
       ];
@@ -236,6 +242,12 @@ class MultiGraphite extends React.Component {
             "28d",
         ],
 
+        sizeButtons: [
+            "930x700",
+            "930x200",
+            "460x185",
+        ],
+
     };
 
     return state;
@@ -305,6 +317,32 @@ class MultiGraphite extends React.Component {
         );
     });
 
+    var sizeButtonsField = [];
+    var sizeButtons = [];
+
+    this.state.sizeButtons.forEach(function(el) {
+      var n = "buttonInactive"
+
+      if (_this.state.width + "x" + _this.state.height === el) {
+        n = "buttonSelected"
+      }
+
+      sizeButtons.push(
+        <span
+          onClick={(event) => _this.handleSizeButtonClick(event, el)}
+          className={ n }
+        >{ el }</span>
+      );
+    });
+
+    sizeButtonsField.push(
+      <div className="field" style={{ textAlign: 'right'}}>
+        <div className="control">
+          { sizeButtons }
+        </div>
+      </div>
+    );
+
     var rangeClassName;
     var recentClassName;
     var timeControls = [];
@@ -331,13 +369,13 @@ class MultiGraphite extends React.Component {
       this.state.dateButtons.forEach(function(row) {
         var buttons = [];
         row.forEach(function(el) {
-          var n = "timeButtonInactive"
+          var n = "buttonInactive"
 
           var from = _this.getGraphiteTimeDateFromNameType(el, 'from');
           var until = _this.getGraphiteTimeDateFromNameType(el, 'until');
 
           if (_this.state.from === from && _this.state.until === until) {
-            n = "timeButtonSelected"
+            n = "buttonSelected"
           }
 
           buttons.push(
@@ -371,10 +409,10 @@ class MultiGraphite extends React.Component {
       var buttons = [];
 
       this.state.recentButtons.forEach(function(el) {
-        var n = "timeButtonInactive"
+        var n = "buttonInactive"
 
         if (_this.state.recent === el) {
-          n = "timeButtonSelected"
+          n = "buttonSelected"
         }
 
         buttons.push(
@@ -492,6 +530,8 @@ class MultiGraphite extends React.Component {
               </div>
             </div>
           </div>
+
+          { sizeButtonsField }
 
           <div className="tabs is-boxed">
             <ul>
