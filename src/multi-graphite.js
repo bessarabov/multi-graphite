@@ -70,6 +70,11 @@ class MultiGraphite extends React.Component {
     this.setState({timeType: what}, this.changeURL);
   }
 
+  handleSizeButtonClick(event, what) {
+    var el = what.split("x");
+    this.setState({width: el[0], height: el[1]}, this.changeURL);
+  }
+
   handleDateButtonClick(event, from, until) {
     this.setState({from: from, until, until}, this.changeURL);
   }
@@ -142,6 +147,7 @@ class MultiGraphite extends React.Component {
       var ignoreElemtns = [
           "jsonData",
           "isValidJson",
+          "sizeButtons",
           "dateButtons",
           "recentButtons",
       ];
@@ -227,6 +233,11 @@ class MultiGraphite extends React.Component {
             "28d",
         ],
 
+        sizeButtons: [
+            "930x300",
+            "300x50",
+        ],
+
     };
 
     return state;
@@ -295,6 +306,32 @@ class MultiGraphite extends React.Component {
             />
         );
     });
+
+    var sizeButtonsField = [];
+    var sizeButtons = [];
+
+    this.state.sizeButtons.forEach(function(el) {
+      var n = "timeButtonInactive"
+
+      if (_this.state.width + "x" + _this.state.height === el) {
+        n = "timeButtonSelected"
+      }
+
+      sizeButtons.push(
+        <span
+          onClick={(event) => _this.handleSizeButtonClick(event, el)}
+          className={ n }
+        >{ el }</span>
+      );
+    });
+
+    sizeButtonsField.push(
+      <div className="field">
+        <div className="control">
+          { sizeButtons }
+        </div>
+      </div>
+    );
 
     var rangeClassName;
     var recentClassName;
@@ -462,6 +499,8 @@ class MultiGraphite extends React.Component {
               </div>
             </div>
           </div>
+
+          { sizeButtonsField }
 
           <div className="tabs is-boxed">
             <ul>
