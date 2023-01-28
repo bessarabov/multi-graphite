@@ -1,6 +1,6 @@
 javascript:(function() {
 
-    let multiGraphiteBaseUrl = "http://localhost:8000";
+    let multiGraphiteBaseUrl = "https://multi-graphite.bessarabov.com";
 
     let currentSearchParams = new URLSearchParams(location.search);
     let newSearchParams = new URLSearchParams();

@@ -32,5 +32,5 @@ It is possible to create a bookmark in the browser that converts the currently
 opened graphite url to multi-graphite url.
 
 Use the code from the file `bookmark.js`, but change
-"http://localhost:8000" in the code to the address of your
+"https://multi-graphite.bessarabov.com" in the code to the address of your
 installation of multi-graphite.
