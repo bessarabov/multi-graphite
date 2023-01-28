@@ -12,4 +12,9 @@
 1.1.1   2022-10-06
         [Patch]
         * Fixing 'Date range' buttons
+
+1.2.0   2023-01-29
+        [Minor]
+        * Added size buttons
+        * Added button to prettify JSON
 ```

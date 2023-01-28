@@ -18,7 +18,7 @@ The recommended way to run this project is to use docker.
 Run the command:
 
 ```
-docker run --detach --publish 8000:80 --name multi-graphite bessarabov/multi-graphite:1.1.1
+docker run --detach --publish 8000:80 --name multi-graphite bessarabov/multi-graphite:1.2.0
 ```
 
 This command will download the needed docker image and run it.
