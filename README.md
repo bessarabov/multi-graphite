@@ -1,5 +1,10 @@
 # multi-graphite
 
+This is the web interface for https://graphiteapp.org:
+
+ * Use the hosted version https://multi-graphite.bessarabov.com
+ * Or you can run it on your own server/computer (see the section "How to run")
+
 ## Screenshots
 
 ![1](https://user-images.githubusercontent.com/47263/192137531-97765244-dd14-44a8-b5e4-e4494047aec1.png)
