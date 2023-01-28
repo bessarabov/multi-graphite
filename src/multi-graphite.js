@@ -74,6 +74,15 @@ class MultiGraphite extends React.Component {
     this.setState({from: from, until, until}, this.changeURL);
   }
 
+  handlePrettifyClick() {
+    if (this.state.isValidJson) {
+      var prettyJson = JSON.stringify(this.state.jsonData, null, 2);
+      if (prettyJson !== this.state.json) {
+        this.setState({json: prettyJson}, this.changeURL);
+      }
+    }
+  }
+
   handleRecentButtonClick(event, what) {
     this.setState({recent: what}, this.changeURL);
   }
@@ -386,6 +395,23 @@ class MultiGraphite extends React.Component {
 
     }
 
+    var prettifyStyle = {
+      textAlign: 'right',
+      color: 'silver',
+    };
+    if (this.state.isValidJson) {
+      var prettyJson = JSON.stringify(this.state.jsonData, null, 2);
+      if (prettyJson !== this.state.json) {
+        prettifyStyle = {
+          textAlign: 'right',
+          cursor: 'pointer',
+          textDecoration: 'underline',
+          textDecorationStyle: 'dashed',
+          textUnderlineOffset: '4px',
+        };
+      }
+    }
+
     return (
     <div>
     <section style={{ paddingTop: '18px', paddingLeft: '18px', paddingRight: '0' }} className="section">
@@ -418,6 +444,10 @@ class MultiGraphite extends React.Component {
                   rows='8'
               ></textarea>
             </div>
+            <div
+                style={ prettifyStyle }
+                onClick={(event) => this.handlePrettifyClick()}
+            >prettify</div>
           </div>
 
           <div className="field">
