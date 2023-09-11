@@ -308,12 +308,14 @@ class MultiGraphite extends React.Component {
     var imagesTags = [];
     images.forEach(function(el){
         imagesTags.push(
-            <img
-                src={ el.image_url }
-                style={{ marginRight: '5px' }}
-                width={ el.width }
-                height={ el.height }
-            />
+            <a href={ el.image_url }>
+                <img
+                    src={ el.image_url }
+                    style={{ marginRight: '5px' }}
+                    width={ el.width }
+                    height={ el.height }
+                />
+            </a>
         );
     });
 
