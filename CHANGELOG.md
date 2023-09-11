@@ -17,4 +17,8 @@
         [Minor]
         * Added size buttons
         * Added button to prettify JSON
+
+1.3.0   2023-09-11
+        [Minor]
+        * Images are links
 ```
