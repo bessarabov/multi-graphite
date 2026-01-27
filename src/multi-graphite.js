@@ -42,6 +42,22 @@ class MultiGraphite extends React.Component {
 
     document.title = mergedState.title;
 
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown(event) {
+    if (event.metaKey && event.shiftKey && event.key === 'f') {
+      event.preventDefault();
+      this.handlePrettifyClick();
+    }
   }
 
   handleControlChange(event, what) {
