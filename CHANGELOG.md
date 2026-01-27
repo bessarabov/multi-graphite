@@ -1,6 +1,10 @@
 # Changelog for multi-graphite
 
 ```
+1.4.0   2026-01-27
+        [Minor]
+        * Add cmd+shift+f prettify hotkey
+
 1.3.0   2023-09-11
         [Minor]
         * Images are links
